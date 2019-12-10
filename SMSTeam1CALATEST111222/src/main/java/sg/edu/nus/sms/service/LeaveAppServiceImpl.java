@@ -57,7 +57,12 @@ public class LeaveAppServiceImpl implements LeaveAppService {
 	@Override
 	public void save(@Valid LeaveApp lea) {
 		// TODO Auto-generated method stub
+		
+		// call the validation function
+		// if true, save
 		learepo.save(lea);
+		
+		// if false, throw an error
 	}
 
 	@Override
@@ -66,4 +71,16 @@ public class LeaveAppServiceImpl implements LeaveAppService {
 		return learepo.findAll();
 	}
 
+	
+	// a method: validate leave date
+	private boolean validateLeaveDate(LeaveApp leaapp) {
+		// retrieve any overlapping leave (start date <= newly applied start date and end date >= newly applied start date)
+		// if any record found, not ok
+		
+		// retrieve any overlapping leave (start date <= newly applied end date and end date >= newly applied end date)
+		// if any record found, not ok
+		
+		// finally if all ok then OK
+		return true;
+	}
 }
