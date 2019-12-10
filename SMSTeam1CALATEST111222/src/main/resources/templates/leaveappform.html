@@ -104,7 +104,7 @@ input[type=text] {
     <div class="w3-row-padding" style="margin:0 -16px">
       
 <div>
-	<form action="/faculty/saveleaveapp" method="get" th:object="${leaveapp}" th:action="@{/faculty/saveleaveapp}">
+	<form action="/faculty/saveleaveapp" onsubmit="return validateForm()" method="get" th:object="${leaveapp}" th:action="@{/faculty/saveleaveapp}">
 	
 	<fieldset>
 		Start Date: <input type="date" th:field="*{startDate}">
@@ -163,6 +163,27 @@ function w3_open() {
 function w3_close() {
   mySidebar.style.display = "none";
   overlayBg.style.display = "none";
+}
+
+//Validate leave date
+function validateForm() {
+	 // get start date and end date
+	 var startDate = document.getElementById("startDate").value;
+	 var endDate = document.getElementById("endDate").value;
+	 
+	 // start date and end date must not null
+	 if(!startDate || !endDate) {
+		 window.alert("date must not be empty");
+		 return false;
+	 }
+	 
+	 // compare start date and end date
+	 if(startDate > endDate) {
+		 window.alert("end date must be later/equal than start date");
+		 return false;
+	 }
+	 
+	 return true;
 }
 </script>
 
