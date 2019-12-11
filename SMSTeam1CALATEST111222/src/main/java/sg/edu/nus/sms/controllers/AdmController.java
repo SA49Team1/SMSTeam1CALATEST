@@ -1,13 +1,18 @@
 package sg.edu.nus.sms.controllers;
 
+import java.io.IOException;
+import java.net.http.HttpHeaders;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import com.opencsv.CSVWriter;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.catalina.filters.RequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +28,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 import sg.edu.nus.sms.model.Course;
 import sg.edu.nus.sms.model.Faculty;
@@ -587,7 +597,7 @@ public class AdmController {
 		
 		List<StudentCourse> stucoulist=stucouservice.findAllByCourse(cou1);
 		
-		List<Students> stulist=stucoulist.stream().map(StudentCourse::getStudent).collect(Collectors.toList());
+		List<Students> stulist=stucoulist.stream().filter(x->x.getStatus().equals("Approved")).map(StudentCourse::getStudent).collect(Collectors.toList());
 
 		
 		
@@ -603,5 +613,21 @@ public class AdmController {
 		model.addAttribute("couappcount",couappcount);
 		
 		return "generateenroll";
+	}
+	
+	
+	@GetMapping("/printenrollreport")
+	public void exportCSV(HttpServletResponse response) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException
+	{
+		List<Students> stulist=stuservice.findAll();
+		String filename="students.csv";
+		
+		response.setContentType("text/csv");
+		
+		response.setHeader("filename", filename);
+		
+		StatefulBeanToCsv<Students> writer=new StatefulBeanToCsvBuilder<Students>(response.getWriter()).withQuotechar(CSVWriter.NO_QUOTE_CHARACTER).withSeparator(CSVWriter.DEFAULT_SEPARATOR).withOrderedResults(false).build();
+		
+		writer.write(stulist);
 	}
 }

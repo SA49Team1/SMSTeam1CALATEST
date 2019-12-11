@@ -2,6 +2,7 @@ package sg.edu.nus.sms.model;
 
 import java.util.List;
 
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
@@ -11,19 +12,26 @@ import javax.validation.constraints.NotEmpty;
 
 import com.sun.istack.NotNull;
 
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvBindByPosition;
+
 @Entity
 @DiscriminatorValue("STU")
 public class Students extends User{
 	
 	@NotNull
 	@Column(unique=true)
+	@CsvBindByPosition(position=0)
 	private int studentID;
 	
 	@NotEmpty
+	@CsvBindByPosition(position=1)
 	private String firstName;
 	@NotEmpty
+	@CsvBindByPosition(position=2)
 	private String lastName;
 	@NotEmpty
+	@CsvBindByPosition(position=3)
 	private String semester;
 	
 	

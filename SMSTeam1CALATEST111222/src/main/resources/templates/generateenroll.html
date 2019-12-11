@@ -137,14 +137,14 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
  			<td th:text=${student.semester}>Semister</td>
 			</tr>
  			<tr>
- 			<td><a href="#" th:href="@{/admin/enrollreport}" type=button class="w3-btn">Back</a><br/></td>
- 			<td><a href="#" th:href="@{/admin/printenrollreport}" type=button class="w3-btn">Print Report</a><br/>
-       		</td>
+ 		
  			</tr>
  			
       
         </table>
-        <hr>
+      
+       		<a href="#" th:href="@{/admin/enrollreport}" type=button class="w3-btn">Back</a><br/>
+ 			<a href="#" th:href="@{/admin/printenrollreport}" type=button class="w3-btn">Print Report</a>
        		
        		
       </div>
