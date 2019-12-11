@@ -30,6 +30,8 @@ public interface FacultyService {
 
 	public void save(@Valid Faculty fac);
 
+	public boolean existsByUserName(String userName);
+
 
 
 }

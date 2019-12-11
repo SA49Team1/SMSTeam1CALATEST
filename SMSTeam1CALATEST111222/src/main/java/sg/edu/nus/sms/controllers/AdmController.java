@@ -3,6 +3,7 @@ package sg.edu.nus.sms.controllers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -50,7 +51,8 @@ import sg.edu.nus.sms.service.StudentServiceImpl;
 @RequestMapping("/admin")
 public class AdmController {
 	
-private LeaveAppService leaservice;
+	/////////////////////////Data Service
+	private LeaveAppService leaservice;
 	
 	@Autowired
 	public void setLeaservice(LeaveAppServiceImpl leaimpl)
@@ -154,6 +156,7 @@ private LeaveAppService leaservice;
 		
 		//////verify if username already exist
 		if(stuservice.existsByUserName(stu.getUserName())) return "forward:/admin/addstudent";
+		if(facservice.existsByUserName(stu.getUserName())) return "forward:/admin/addstudent";
 		
 		stuservice.save(stu);
 		
@@ -280,8 +283,14 @@ private LeaveAppService leaservice;
 		
 		if(f1!=null) fac.setId(f1.getId());
 		
-		//////verify if username already exist
-		if(stuservice.existsByUserName(fac.getUserName())) return "forward:/admin/addstudent";
+		//////when save new faculty ,verify if username already exist
+		if(fac.getDepartment()==null)
+		{
+			if(stuservice.existsByUserName(fac.getUserName())) return "forward:/admin/addfaculty";
+		
+			if(facservice.existsByUserName(fac.getUserName())) return "forward:/admin/addfaculty";
+		}
+		
 		
 		facservice.save(fac);
 		
@@ -541,5 +550,60 @@ private LeaveAppService leaservice;
 		stucou.setStatus("Rejected");
 		stucouservice.save(stucou);
 		return "forward:/admin/courseapplist";
+	}
+	
+	////////////////////Enroll Report
+	
+	@GetMapping("/enrollreport")
+	public String enrollReport(Model model,@SessionAttribute UserSession usersession)
+	{
+		if(!usersession.getUserType().equals("ADM")) return "forward:/home/logout";
+		
+		Course cou=new Course();
+		
+		model.addAttribute("courseform", cou);
+	
+		
+		List<String> courselist=couservice.findAll().stream().map(Course::getCourseName).collect(Collectors.toList());
+		model.addAttribute("courselist", courselist);
+		
+		
+		int leacount=leaservice.findAllByStatus("Pending").size();
+		int couappcount=stucouservice.findAllByStatus("Pending").size();
+		model.addAttribute("stucount",stuservice.count());
+		model.addAttribute("faccount",facservice.count());
+		model.addAttribute("coucount",couservice.count());
+		model.addAttribute("leacount",leacount);
+		model.addAttribute("couappcount",couappcount);
+		
+		return "enrollreport";
+	}
+	
+	@PostMapping("/generateenroll")
+	public String generateEnroll(Model model,@ModelAttribute Course cou,@SessionAttribute UserSession usersession) {
+		if(!usersession.getUserType().equals("ADM")) return "forward:/home/logout";
+		
+		
+		Course cou1=couservice.findByCourseName(cou.getCourseName());
+		
+		
+		List<StudentCourse> stucoulist=stucouservice.findAllByCourse(cou1);
+		
+		List<Students> stulist=stucoulist.stream().map(StudentCourse::getStudent).collect(Collectors.toList());
+
+		
+		
+		model.addAttribute("students",stulist);
+		model.addAttribute("coursename", cou.getCourseName());
+		
+		int leacount=leaservice.findAllByStatus("Pending").size();
+		int couappcount=stucouservice.findAllByStatus("Pending").size();
+		model.addAttribute("stucount",stuservice.count());
+		model.addAttribute("faccount",facservice.count());
+		model.addAttribute("coucount",couservice.count());
+		model.addAttribute("leacount",leacount);
+		model.addAttribute("couappcount",couappcount);
+		
+		return "generateenroll";
 	}
 }

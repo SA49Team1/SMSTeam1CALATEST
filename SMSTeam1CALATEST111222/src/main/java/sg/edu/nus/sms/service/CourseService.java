@@ -35,5 +35,9 @@ public interface CourseService {
 	public void delete(Course cou);
 
 
+
+	public Course findByCourseName(String courseName);
+
+
 	
 }

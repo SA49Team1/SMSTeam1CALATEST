@@ -16,4 +16,6 @@ public interface FacultyRepository extends JpaRepository<Faculty, Integer> {
 
 	public Object findByUserName(String username);
 
+	public boolean existsByUserName(String userName);
+
 }

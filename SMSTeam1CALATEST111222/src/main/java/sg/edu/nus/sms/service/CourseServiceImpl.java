@@ -62,4 +62,10 @@ public class CourseServiceImpl implements CourseService {
 		courepo.delete(cou);
 	}
 
+	@Override
+	public Course findByCourseName(String courseName) {
+		// TODO Auto-generated method stub
+		return courepo.findByCourseName(courseName);
+	}
+
 }

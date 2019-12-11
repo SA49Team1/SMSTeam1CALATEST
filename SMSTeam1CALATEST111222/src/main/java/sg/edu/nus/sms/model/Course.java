@@ -2,6 +2,7 @@ package sg.edu.nus.sms.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,7 +37,7 @@ public class Course {
 	
 	
 	
-	@OneToMany(mappedBy="course")
+	@OneToMany(mappedBy="course",cascade= {CascadeType.ALL})
 	private List<StudentCourse> stugrades;
 	
 

@@ -2,6 +2,7 @@ package sg.edu.nus.sms.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -28,7 +29,7 @@ public class Students extends User{
 	
 	private int cgpa;
 	
-	@OneToMany(mappedBy="student")
+	@OneToMany(mappedBy="student", cascade= {CascadeType.ALL})
 	private List<StudentCourse> GradeList;
 	
 	

@@ -19,6 +19,10 @@ public interface CourseRepository extends JpaRepository<Course,Integer> {
 
 
 
+	public Course findByCourseName(String courseName);
+
+
+
 
 	
 

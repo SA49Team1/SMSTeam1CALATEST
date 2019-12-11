@@ -1,5 +1,6 @@
 package sg.edu.nus.sms.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,10 +14,10 @@ public class StudentCourse {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Students student;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Course course;
 	
 	private String grade;

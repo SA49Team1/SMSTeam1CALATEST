@@ -89,4 +89,10 @@ public class FacultyServiceImpl implements FacultyService {
 	facrepo.save(fac);	
 	}
 
+	@Override
+	public boolean existsByUserName(String userName) {
+		// TODO Auto-generated method stub
+		return facrepo.existsByUserName(userName);
+	}
+
 }
