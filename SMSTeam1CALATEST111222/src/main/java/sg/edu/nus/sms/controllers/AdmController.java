@@ -461,6 +461,9 @@ public class AdmController {
 	public String approveLeaveAppForm(Model model, @PathVariable("id") Integer id) {
 		LeaveApp leaapp=leaservice.findById(id);
 		leaapp.setStatus("Approved");
+		
+		// add try and catch
+		// if caught error, redirect to error.html with the error message
 		leaservice.save(leaapp);
 		model.addAttribute("leaveapp",leaapp);
 				
@@ -471,6 +474,9 @@ public class AdmController {
 	public String rejectLeaveAppForm(Model model, @PathVariable("id") Integer id) {
 		LeaveApp leaapp=leaservice.findById(id);
 		leaapp.setStatus("Rejected");
+		
+		// add try and catch
+		// if caught error, redirect to error.html with the error message
 		leaservice.save(leaapp);
 		model.addAttribute("leaveapp",leaapp);
 				
@@ -490,6 +496,8 @@ public class AdmController {
 		Faculty f1=facservice.findByFirstName("Jon");
 		lea.setFaculty(f1);
 		
+		// add try and catch
+		// if caught error, redirect to error.html with the error message
 		leaservice.save(lea);
 		
 		return "forward:/admin/applicationlist";
