@@ -3,6 +3,8 @@ package sg.edu.nus.sms.controllers;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -76,6 +78,8 @@ public class StuController {
 		}
 		
 		
+		
+		
 		model.addAttribute("studentname",stu.toString());
 		model.addAttribute("compstucoulist", compstucoulist);
 		model.addAttribute("mygpa",mygpa);
@@ -91,17 +95,10 @@ public class StuController {
 
 		Students stu=stuservice.findById(usersession.getId());
 		ArrayList<StudentCourse> stucoulist=stucouservice.findAllByStudent(stu);
-		ArrayList<StudentCourse> availcourses=new ArrayList<StudentCourse>();
-		ArrayList<StudentCourse> mycourseapp=new ArrayList<StudentCourse>();
 
-		for (StudentCourse stucou:stucoulist)
-		{
-			if (stucou.getStatus().equals("Available"))
-				availcourses.add(stucou);
-			else
-				mycourseapp.add(stucou);
-			
-		}
+		
+		List<StudentCourse> availcourses=stucoulist.stream().filter(x->x.getStatus().equals("Available")).collect(Collectors.toList());
+		List<StudentCourse> mycourseapp=stucoulist.stream().filter(Predicate.not(x->x.getStatus().equals("Available"))).collect(Collectors.toList());
 		model.addAttribute("availcourses",availcourses);
 		model.addAttribute("mycourseapps",mycourseapp);
 

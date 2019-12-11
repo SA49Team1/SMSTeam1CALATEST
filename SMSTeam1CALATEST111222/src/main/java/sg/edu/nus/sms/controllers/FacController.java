@@ -3,6 +3,7 @@ package sg.edu.nus.sms.controllers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -184,16 +185,10 @@ public class FacController {
 		
 		Course cou=couservice.findById(id);
 		List<StudentCourse> stucoulist=stucouservice.findAllByCourse(cou);
-		List<StudentCourse> valistucoulist=new ArrayList<StudentCourse>();
-		List<StudentCourse> managedstucoulist=new ArrayList<StudentCourse>();
+
+		List<StudentCourse> valistucoulist=stucoulist.stream().filter(x->x.getStatus().equals("Approved")).collect(Collectors.toList());
+		List<StudentCourse> managedstucoulist=stucoulist.stream().filter(x->x.getStatus().equals("Graded")).collect(Collectors.toList());
 		
-		for(StudentCourse stucou:stucoulist)
-		{
-			if(stucou.getStatus().equals("Approved")) valistucoulist.add(stucou);
-			else if(stucou.getStatus().equals("Graded")) managedstucoulist.add(stucou);
-		
-			
-		}
 		model.addAttribute("coursename",cou.getCourseName());
 		model.addAttribute("valistucoulist",valistucoulist);
 		model.addAttribute("managedstucoulist",managedstucoulist);
