@@ -1,6 +1,8 @@
 package sg.edu.nus.sms.model;
 
-import java.util.Date;
+
+
+import java.sql.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +15,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.sun.istack.NotNull;
 
+import sg.edu.nus.sms.validator.IsValidLeave;
+
+
+
+@IsValidLeave (message = "test")
 @Entity
 public class LeaveApp {
 	
@@ -24,11 +31,11 @@ public class LeaveApp {
 	private Faculty faculty;
 	
 	@NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	
 	private Date startDate;
 	
 	@NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	
 	private Date endDate;
 	
 	private String status;
