@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
+<style> 
+
+form{
+margin:0 auto;
+width:300px;}
+
+</style>
+</head>
+<body>
+<!-- Top container-->
+ <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <span class="w3-bar-item w3-right">Hogwarts School Management System</span>
+</div>
+
+<div class="w3-main" style="margin-top:43px;">
+
+<hr>
+
+
+	
+	
+ 	<div class="w3-container">
+ 	<form th:object="${user}" th:action="@{/home/authenticate}" th:method="get" >
+ 		<fieldset>
+ 			Name: <input type="text" th:field="*{userName}" class="w3-input">
+ 			<p th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></p>
+ 		</fieldset>
+ 		<fieldset>
+ 			Password:<input type="password" th:field="*{passWord}" class="w3-input">
+ 		    <p th:if="${#fields.hasErrors('passWord')}" th:errors="*{passWord}"></p>
+ 		</fieldset>
+ 		
+ 	 		
+ 		
+ 		
+ 		<fieldset>
+ 			<button type="submit" class="w3-btn">Submit</button>
+ 		</fieldset>
+ 	</form>
+ 	</div>
+ 		</div>
+</body>
+</html>
