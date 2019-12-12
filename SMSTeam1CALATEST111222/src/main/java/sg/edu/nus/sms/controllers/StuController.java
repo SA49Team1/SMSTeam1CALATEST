@@ -60,29 +60,15 @@ public class StuController {
 		
 		Students stu=stuservice.findById(usersession.getId());
 		List<StudentCourse> stucoulist=stucouservice.findAllByStudent(stu);
-		List<StudentCourse> compstucoulist=new ArrayList<StudentCourse>();
-		long mygpa=0;
+		List<StudentCourse> compstucoulist=stucoulist.stream().filter(x->x.getStatus().equals("Graded")).collect(Collectors.toList());
 		
-		
-		for(StudentCourse sc:stucoulist)
-		{
-			
-			if (sc.getStatus().equals("Graded")) 
-				{
-				compstucoulist.add(sc);
-				if(sc.getGrade().equals("A")) mygpa+=5*sc.getCourse().getCourseUnit();
-				else if (sc.getGrade().equals("B")) mygpa+=4*sc.getCourse().getCourseUnit();
-				else if (sc.getGrade().equals("C")) mygpa+=3*sc.getCourse().getCourseUnit();
-				else if (sc.getGrade().equals("D")) mygpa+=2*sc.getCourse().getCourseUnit();
-				}
-		}
-		
+
 		
 		
 		
 		model.addAttribute("studentname",stu.toString());
 		model.addAttribute("compstucoulist", compstucoulist);
-		model.addAttribute("mygpa",mygpa);
+		model.addAttribute("mygpa",stu.getCgpa());
 		
 		model.addAttribute("mysemester", stu.getSemester());
 		model.addAttribute("mycourseenrolled", stucouservice.findAllByStudent(stu).size());

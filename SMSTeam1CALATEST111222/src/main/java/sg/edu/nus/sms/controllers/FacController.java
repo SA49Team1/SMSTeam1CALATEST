@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -223,7 +224,7 @@ public class FacController {
 		return "markgradeform";
 	}
 	
-
+	@Transactional
 	@RequestMapping(value="/savegrade",path="/savegrade", method= {RequestMethod.GET, RequestMethod.POST}, produces="text/html")
 	public String savegrade(@ModelAttribute StudentCourse stucou) {
 		
@@ -236,6 +237,15 @@ public class FacController {
 		temp1.setGrade(stucou.getGrade());
 		temp1.setStatus("Graded");
 		stucouservice.save(temp1);
+		
+		int courseunit=cou.getCourseUnit();
+		int coursegpa=0;
+		if (temp1.getGrade().equals("A")) coursegpa=5*courseunit;
+		else if (temp1.getGrade().equals("B")) coursegpa=4*courseunit;
+		else if (temp1.getGrade().equals("C")) coursegpa=3*courseunit;
+		else if (temp1.getGrade().equals("D")) coursegpa=2*courseunit;
+		
+		stu.setCgpa(stu.getCgpa()+coursegpa);
 		
 		return "forward:/faculty/coursestulist/"+stucou.getCourse().getId();
 	}
