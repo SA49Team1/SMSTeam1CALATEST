@@ -112,7 +112,7 @@ input[type=text] {
 	</fieldset>
 	
     <fieldset>
-		End Date: <input type="date" th:field="*{endDate}">
+		End Date: <input type="date" th:field="*{endDate}  ">
 		<p th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></p>
 	</fieldset>
 	
@@ -120,11 +120,10 @@ input[type=text] {
 	
 	<fieldset>
 		<button type="submit" class="w3-btn">Save</button>
+		<button class="w3-btn" onclick="window.location.href='/faculty/myleaveapps'">Cancel</button>
 	</fieldset>
 	
 	</form>
-	
-	<a href="#" th:href="@{/faculty/myleaveapps}" type=button class="w3-btn">Cancel</a><br/>
 </div>
       
             
