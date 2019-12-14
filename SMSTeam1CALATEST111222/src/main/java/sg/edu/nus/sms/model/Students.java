@@ -100,7 +100,7 @@ public class Students extends User{
 
 	public Students() {
 		super();
-		this.cgpa=-1;
+		
 		// TODO Auto-generated constructor stub
 	}
 

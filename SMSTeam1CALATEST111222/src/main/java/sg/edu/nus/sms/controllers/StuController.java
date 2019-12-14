@@ -101,11 +101,10 @@ public class StuController {
 		List<StudentCourse> stucoulist=stucouservice.findAllByStudent(stu);
 		
 		List<StudentCourse> compstucoulist=stucoulist.stream().filter(x->x.getStatus().equals("Graded")).collect(Collectors.toList());
-		double mygpa=0.0;
-		double units=0.0;
+		double mygpa=stu.getCgpa();
+		double units=stucouservice.findAllByStudent(stu).stream().filter(x->x.getStatus().equals("Graded")).collect(Collectors.summingInt(x->x.getCourse().getCourseUnit()));;
 		
-		mygpa=stu.getCgpa();
-		units=stucouservice.findAllByStudent(stu).stream().collect(Collectors.summingInt(x->x.getCourse().getCourseUnit()));
+		
 		
 		double a1=mygpa/units;
 		double aa=Math.round(a1 * 100.0) / 100.0;
