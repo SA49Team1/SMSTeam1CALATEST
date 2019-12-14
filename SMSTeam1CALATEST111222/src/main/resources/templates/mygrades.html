@@ -37,9 +37,15 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <h5>Dashboard</h5>
   </div>
   <div class="w3-bar-block">
-    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  Grade Received</a>
-    <a href="#" th:href="@{/student/enrollcourse}"class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Course Enroll Management</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu">
+    <i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+    <a href="#" th:href="@{/student/mygrades}" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  Grade Received</a>
+    <a href="#" th:href="@{/student/enrollcourse}"class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>Available Courses</a>
+    
+        <a href="#" th:href="@{/student/enrolled}"class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>Enrolled Courses</a>
+    
+        <a href="#" th:href="@{/student/movement/2}"class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i> Movement Register</a>
+    
     <a href="#" th:href="@{/home/logout}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  Log Out</a>
     </div>
 </nav>
@@ -93,13 +99,13 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
          <td><i class="fa fa-user w3-text-blue w3-large"></i>Course name</td><td>Grade</td>
  		</tr>
  		
- 		
+
  		<tr th:each="stucou:${compstucoulist}">
- 			<td th:text=${stucou.course}>Course Name</td>
- 			
- 			<td th:text="${stucou.grade}">Grade</td>
+ 			<td th:text=${stucou.getCourse().getCourseName()}>Course Name</td>
+ 			<td th:text=${stucou.grade}>Grade</td>
  			
  		</tr>
+ 		
  			<tr>
  				
  			</tr>
@@ -111,16 +117,16 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       
       <div class="w3-panel">
  	<h1>CGPA by now</h1>
- 	<h3 th:text=${studentname}>Student Name</h3>
- 	<table>
- 	<tr>	<td>total GPA received</td>
+ 	
+ 	<table class="w3-table w3-striped w3-white">
+ 	<tr>
+         <td><i class="fa fa-user w3-text-blue w3-large"></i>Semester</td><td>GPA</td>
  		</tr>
  		<tr>	
- 		<td th:text=${mygpa}>My CGPA</td>
+ 		<td th:text=${mysemester}>Semester</td>
+ 		<td th:text=${mygpa}>GPA</td>
  		</tr>
- 			
- 			
- 	
+
  			
  	</table>
  	</div>
@@ -132,7 +138,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   
   <!-- Footer -->
   <footer class="w3-container w3-padding-16 w3-light-grey">
-    <p class="w3-wide" align="center">&copy; NUS ISS SA49 Team1 Presented, All Rights Reserved</p>
+    <p class="w3-wide" align="center">&copy; Shawn Wang Presented, All Rights Reserved</p>
   </footer>
 
   <!-- End page content -->
