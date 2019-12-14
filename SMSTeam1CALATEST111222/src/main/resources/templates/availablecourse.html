@@ -37,9 +37,13 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <h5>Dashboard</h5>
   </div>
   <div class="w3-bar-block">
-    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
-    <a href="#" th:href="@{/student/mygrades}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  Grade Received</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-eye fa-fw"></i>  Course Enroll Management</a>
+ <a href="#" th:href="@{/student/mygrades}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  Grade Received</a>
+    <a href="#" th:href="@{/student/enrollcourse}"class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-eye fa-fw"></i>Available Courses</a>
+    
+        <a href="#" th:href="@{/student/enrolled}"class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>Enrolled Courses</a>
+    
+        <a href="#" th:href="@{/student/movement/2}"class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i> Movement Register</a>
+    
     <a href="#" th:href="@{/home/logout}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  Log Out</a>
     </div>
 </nav>
@@ -85,66 +89,48 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <div class="w3-row-padding" style="margin:0 -16px">
       
       <div class="w3-twothird">
-        <h1>Courses available for applying</h1>
+        <h1>Available Courses</h1>
+        
         <h3 th:text=${studentname}>Student Name</h3>
  		
         <table class="w3-table w3-striped w3-white">
         <tr>
-         <td><i class="fa fa-user w3-text-blue w3-large"></i>Course name</td><td>Status</td>
+         <td><i class="fa fa-user w3-text-blue w3-large"></i>Course Code</td><td>Course Name</td>
  		</tr>
- 		
- 		<tr th:each="stucourse:${availcourses}">
- 			<td th:text="${stucourse.course.toString()}">Course Info</td>
- 			<td th:text="${stucourse.status}">Status</td>
- 			
- 			
- 			<td><a href="#" th:href="@{/student/applycourse/}+${stucourse.id}" >Apply</a></td>
- 		
- 		</tr>	
- 			<tr>
- 				
- 			</tr>
- 			
- 		
-        </table>
-        	
-      </div>
-      
-      <div class="w3-panel">
- 	<h1>Status of Courses Applied</h1>
-    <h3 th:text=${studentname}>Student Name</h3>
- 	
- 	<table>
- 	    <tr>
-         <td><i class="fa fa-user w3-text-blue w3-large"></i>Course Info</td><td>Status</td>
- 		</tr>
- 	
- 		<tr th:each="courseapp:${mycourseapps}">
- 		
- 			
- 			<td th:text=${courseapp.course.toString()}>Course Info</td>
- 			
- 			
- 			<td th:text="${courseapp.status}">Status</td>
- 			
- 			
- 		
- 			</tr>
- 			
- 			
- 	
- 			
- 	</table>
- 	</div>
-            
+   
 
+        <tr th:each="stucourse, iStat : ${bookPage.content}"
+            th:style="${iStat.odd}? 'font-weight: bold;'"
+            th:alt-title="${iStat.even}? 'even' : 'odd'">
+            <td th:text="${stucourse.getCourse().getCourseCode()}">Course Code</td>
+            <td th:text="${stucourse.getCourse().getCourseName()}">Course Name</td>
+            <td>
+ 			
+ 			<a href="#" th:href="@{/student/applycourse/}+${stucourse.id}" >Apply</a></td>
+            
+        </tr>
+
+        </table>
+       
+    <div style="text-align:center;">
+    
+   	<nobr>	
+    <span style="padding-left:15px;" th:if="${bookPage.totalPages > 0}" th:each ="pageNumber:${pageNumbers}" >
+   	<a th:href="@{/student/enrollcourse(size=${bookPage.size}, page=${pageNumber})}"
+      th:text=${pageNumber} th:class="${pageNumber==bookPage.number + 1} ? active"></a>
+    </span>
+    </nobr>
+    </div>
+     	
+      </div>
+ 
     </div>
   </div>
   <hr>
   
   <!-- Footer -->
   <footer class="w3-container w3-padding-16 w3-light-grey">
-    <p class="w3-wide" align="center">&copy; NUS ISS SA49 Team1 Presented, All Rights Reserved</p>
+    <p class="w3-wide" align="center">&copy; Shawn Wang Presented, All Rights Reserved</p>
   </footer>
 
   <!-- End page content -->
