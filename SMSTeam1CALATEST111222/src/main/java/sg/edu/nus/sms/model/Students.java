@@ -100,6 +100,7 @@ public class Students extends User{
 
 	public Students() {
 		super();
+		this.cgpa=-1;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -116,6 +117,28 @@ public class Students extends User{
 	@Override
 	public String toString() {
 		return "[" + firstName + "," + lastName + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + studentID;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Students other = (Students) obj;
+		if (studentID != other.studentID)
+			return false;
+		return true;
 	}
 	
 	

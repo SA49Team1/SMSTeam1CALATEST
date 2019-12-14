@@ -133,7 +133,7 @@ input[type=text] {
 	<form action="/admin/savestudent" method="get" th:object="${student}" th:action="@{/admin/savestudent}">
 
 	<fieldset>
-		StudentID: <input type="text" th:field="*{studentID}">
+		StudentID: <input type="text" th:field="*{studentID}" readonly>
 		<p th:if="${#fields.hasErrors('studentID')}" th:errors="*{studentID}"></p>
 	</fieldset>
 

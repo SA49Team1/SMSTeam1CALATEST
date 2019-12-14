@@ -139,7 +139,7 @@ public class AdmController {
 	@GetMapping("/addstudent")
 	public String addStudentForm(Model model) {
 		Students stu=new Students();
-		
+		stu.setStudentID(stuservice.count()+1);
 		model.addAttribute("student",stu);
 		
 		int leacount=leaservice.findAllByStatus("Pending").size();
@@ -162,17 +162,22 @@ public class AdmController {
 			return "forward:/admin/addstudent";
 		}
 		
-		Students s1= stuservice.findByStudentID(stu.getStudentID());
+		Students s1= stuservice.findByUserName(stu.getUserName());
+		/////////////save edit
+		if(s1!=null)
+		{
+			s1.setUserName(stu.getUserName());;
+			s1.setFirstName(stu.getFirstName());
+			s1.setLastName(stu.getLastName());
+			s1.setSemester(stu.getSemester());
+			stuservice.save(s1);
+		}
 		
-		if(s1!=null) stu.setId(s1.getId());
+		//////////save new student
+		else
+		{
 		
-		//////verify if username already exist
-		if(stuservice.existsByUserName(stu.getUserName())) return "forward:/admin/addstudent";
-		if(facservice.existsByUserName(stu.getUserName())) return "forward:/admin/addstudent";
-		
-		stuservice.save(stu);
-		
-		////////////////Initiate course application list for each student
+				////////////////Initiate course application list for each student
 		List<Course> coulist=couservice.findAll();
 		
 		for(Course cou:coulist) {
@@ -181,13 +186,15 @@ public class AdmController {
 			stucou.setCourse(cou);
 			stucouservice.save(stucou);
 		}
-		
+		stuservice.save(stu);
+		}
 		return "forward:/admin/studentlist";
 	}
 
 	@GetMapping("/editstudent/{id}")
 	public String editStudentForm(Model model, @PathVariable("id") Integer id) {
 		Students stu=stuservice.findById(id);
+		
 		model.addAttribute("student",stu);
 		
 		int leacount=leaservice.findAllByStatus("Pending").size();
