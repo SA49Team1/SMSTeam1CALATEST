@@ -16,7 +16,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,22 +37,59 @@ import sg.edu.nus.sms.repo.CourseRepository;
 import sg.edu.nus.sms.repo.LeaveAppRepository;
 import sg.edu.nus.sms.repo.StudentCourseRepository;
 import sg.edu.nus.sms.repo.StudentsRepository;
+import sg.edu.nus.sms.service.CourseService;
+import sg.edu.nus.sms.service.CourseServiceImpl;
+import sg.edu.nus.sms.service.FacultyService;
+import sg.edu.nus.sms.service.FacultyServiceImpl;
+import sg.edu.nus.sms.service.LeaveAppService;
+import sg.edu.nus.sms.service.LeaveAppServiceImpl;
+import sg.edu.nus.sms.service.StudentCourseService;
+import sg.edu.nus.sms.service.StudentCourseServiceImpl;
+import sg.edu.nus.sms.service.StudentService;
+import sg.edu.nus.sms.service.StudentServiceImpl;
 
 @Controller
 @SessionAttributes("usersession")
 @RequestMapping("/student")
 public class StuController {
-	@Autowired
-	private StudentCourseRepository stucourepo;
+
+	/////////////////////////Data Service
+	private LeaveAppService leaservice;
 	
 	@Autowired
-	private StudentsRepository sturepo;
+	public void setLeaservice(LeaveAppServiceImpl leaimpl)
+	{
+		this.leaservice=leaimpl;
+	}
+	
+	
+	private CourseService couservice;
+	@Autowired
+	public void setCouservice(CourseServiceImpl couimpl) {
+		this.couservice = couimpl;
+	}
+
+	
+	private StudentCourseService stucouservice;
+	@Autowired
+	public void setStucouservice(StudentCourseServiceImpl stucouimpl) {
+		this.stucouservice = stucouimpl;
+	}
+
+
+	private StudentService stuservice;
 	
 	@Autowired
-	private CourseRepository courepo;
+	public void setStudentService(StudentServiceImpl stuimpl) {
+		this.stuservice = stuimpl;
+	}
 	
-	@Autowired
-	private LeaveAppRepository leaverepo;
+	
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+		
+		
+	}
 	
 	@GetMapping("/mygrades")
 	public String mygrades(@SessionAttribute UserSession usersession, Model model) {
@@ -59,16 +98,16 @@ public class StuController {
 		
 		//Pageable page1 = (Pageable) PageRequest.of(0, 3);
 		
-		Students stu=sturepo.findById(usersession.getId()).get();
+		Students stu=stuservice.findById(usersession.getId());
 		
-		List<StudentCourse> stucoulist=stucourepo.findAllByStudent(stu);
+		List<StudentCourse> stucoulist=stucouservice.findAllByStudent(stu);
 		
 		List<StudentCourse> compstucoulist=new ArrayList<StudentCourse>();
 		double mygpa=0.0;
 		double units=0.0;
 		
 		//org.jboss.logging.Logger logger = LoggerFactory.logger(StuController.class);
-		for(StudentCourse sc:stucoulist)
+		/*for(StudentCourse sc:stucoulist)
 		{
 			//logger.info("StudentCoursegggggggggggggggggggggggggggggggggggggg"+sc);
 			if (sc.getStatus().equals("Graded")) 
@@ -95,8 +134,10 @@ public class StuController {
 					units+=sc.getCourse().getCourseUnit();
 				}
 			
-		}
-		}
+		}*/
+		
+		mygpa=stu.getCgpa();
+		units=stucouservice.findAllByStudent(stu).stream().collect(Collectors.summingInt(x->x.getCourse().getCourseUnit()));
 		
 			double a1=mygpa/units;
 			double aa=Math.round(a1 * 100.0) / 100.0;
@@ -117,8 +158,8 @@ public class StuController {
     public String listBooks(@SessionAttribute UserSession usersession,Model model,@RequestParam("page") Optional<Integer> page,@RequestParam("size") Optional<Integer> size) 
 	{
 		
-		Students stu=sturepo.findById(usersession.getId()).get();
-		List<StudentCourse>stucourse= stucourepo.findAllByStudent(stu);
+		Students stu=stuservice.findById(usersession.getId());
+		List<StudentCourse>stucourse= stucouservice.findAllByStudent(stu);
 		List<StudentCourse>student_course_list=new ArrayList<StudentCourse>();
 		System.err.println("----- \t \t Pagination Method \t \t -----");
 		
@@ -167,11 +208,13 @@ public class StuController {
 	}
 	
 	@GetMapping("/applycourse/{id}")
-	public String applyCourse(@PathVariable("id") Integer id,Model model)
+	public String applyCourse(@PathVariable("id") Integer id,Model model,@SessionAttribute UserSession usersession)
 	{
-		StudentCourse stucou =stucourepo.findAllById(id);
+		Course cou=couservice.findById(id);
+		Students stu=stuservice.findById(usersession.getId());
+		StudentCourse stucou =stucouservice.findByCourseAndStudent(cou,stu);
 		stucou.setStatus("Pending");
-		stucourepo.save(stucou);
+		stucouservice.save(stucou);
 	
 		return "forward:/student/enrollcourse";
 	}
@@ -180,16 +223,13 @@ public class StuController {
 	@GetMapping("/enrolled")
 	public String EnrolledCourse(@SessionAttribute UserSession usersession,Model model)
 	{
-		Students stu=sturepo.findById(usersession.getId()).get();
+		Students stu=stuservice.findById(usersession.getId());
 		
-		List<StudentCourse> stucoulist=stucourepo.findAllByStudent(stu);
+		List<StudentCourse> stucoulist=stucouservice.findAllByStudent(stu);
 	
-		List<StudentCourse> total=new ArrayList<StudentCourse>(); 
-		for(StudentCourse c:stucoulist) {
-		if(c.getStatus().equals("Pending")) {
-			total.add(c);
-		}
-		}
+		List<StudentCourse> total=stucoulist.stream().filter(x->x.getStatus().equals("Approved")).collect(Collectors.toList());
+				
+
 		 model.addAttribute("enrolledcourse", total);
 		return "enrolledcourses.html";
 	}
@@ -198,67 +238,19 @@ public class StuController {
 	@GetMapping("/cancelenroll/{id}")
 	public String cancelEnrolled(@PathVariable("id") Integer id,Model model,@SessionAttribute UserSession usersession)
 	{
-		
-		ArrayList<StudentCourse>stucou=stucourepo.findAllByCourseId(id);
+		Course cou=couservice.findById(id);
+		Students stu=stuservice.findById(usersession.getId());
+		StudentCourse stucou=stucouservice.findByCourseAndStudent(cou,stu);
 	
-		for(StudentCourse s:stucou) {
-			
-			if(s.getStudent().getId()==usersession.getId()) {
 		
-				s.setStatus("Available");
-				stucourepo.save(s);
-			}
-			
-		}
-
+				stucou.setStatus("Available");
+				stucouservice.save(stucou);
+		
 		return "forward:/student/enrolled";
 	}
 	
 	
-	@GetMapping("/movement/{id}")
-	public String MovementRegister(Model model,@SessionAttribute UserSession usersession,@PathVariable("id") int id)
-	{
-		if(!usersession.getUserType().equals("STU")) return "forward:/home/logout";
-	
-		List<LeaveApp> lealist=new ArrayList<LeaveApp>();
-		lealist=leaverepo.findAll();
-		
-		List<LeaveApp> this_month=new ArrayList<LeaveApp>();
-		List<LeaveApp> last_month=new ArrayList<LeaveApp>();
-		List<LeaveApp> next_month=new ArrayList<LeaveApp>();
-		
-		Date date=new Date();
-		Calendar calendar = Calendar.getInstance();
-		int currentmonth = calendar.get(Calendar.MONTH);
-		System.out.println("AAAAAAAAAAAAAAa"+currentmonth);
-		for(LeaveApp l :lealist) {
-			date=l.getStartDate();
-			calendar.setTime(date);
-			int i=calendar.get(Calendar.MONTH);
-			System.out.println("MMMMMMMMMMMMMMMM"+i);
-			if(i==currentmonth) {
-				this_month.add(l);
-			}
-			else if(i+1==currentmonth) {
-				last_month.add(l);
-			}
-			else if(currentmonth==11) {
-				if(i+11==currentmonth)
-				next_month.add(l);
-			}
-		}
-		
-		if(id==2) {
-			model.addAttribute("leavelists",this_month);
-		}
-		else if(id==1) {
-			model.addAttribute("leavelists",last_month);
-		}
-		else if(id==3) {
-			model.addAttribute("leavelists",next_month);
-		}
-		return "movementreg.html";
-	}
+
 	
 	 
 	}

@@ -3,6 +3,8 @@ package sg.edu.nus.sms.controllers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -628,5 +630,50 @@ public class AdmController {
 		StatefulBeanToCsv<Students> writer=new StatefulBeanToCsvBuilder<Students>(response.getWriter()).withQuotechar(CSVWriter.NO_QUOTE_CHARACTER).withSeparator(CSVWriter.DEFAULT_SEPARATOR).withOrderedResults(false).build();
 		
 		writer.write(stulist);
+	}
+	
+	///////////////////Movement REg
+	@GetMapping("/movement/{id}")
+	public String MovementRegister(Model model,@SessionAttribute UserSession usersession,@PathVariable("id") int id)
+	{
+		
+		List<LeaveApp> lealist=new ArrayList<LeaveApp>();
+		lealist=leaservice.findAll();
+		
+		List<LeaveApp> this_month=new ArrayList<LeaveApp>();
+		List<LeaveApp> last_month=new ArrayList<LeaveApp>();
+		List<LeaveApp> next_month=new ArrayList<LeaveApp>();
+		
+		Date date=new Date();
+		Calendar calendar = Calendar.getInstance();
+		int currentmonth = calendar.get(Calendar.MONTH);
+	
+		for(LeaveApp l :lealist) {
+			date=l.getStartDate();
+			calendar.setTime(date);
+			int i=calendar.get(Calendar.MONTH);
+			
+			if(i==currentmonth) {
+				this_month.add(l);
+			}
+			else if(i+1==currentmonth) {
+				last_month.add(l);
+			}
+			else if(currentmonth==11) {
+				if(i+11==currentmonth)
+				next_month.add(l);
+			}
+		}
+		
+		if(id==2) {
+			model.addAttribute("leavelists",this_month);
+		}
+		else if(id==1) {
+			model.addAttribute("leavelists",last_month);
+		}
+		else if(id==3) {
+			model.addAttribute("leavelists",next_month);
+		}
+		return "movementreg.html";
 	}
 }

@@ -19,38 +19,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   <span class="w3-bar-item w3-right">Hogwarts School Management System</span>
 </div>
 
-<!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
-  <div class="w3-container w3-row">
-    <div class="w3-col s4">
-      <!--  <img src="#" class="w3-circle w3-margin-right" style="width:46px">-->
-    </div>
-    <div class="w3-col s8 w3-bar">
-      <span>Welcome, <strong>Faculty</strong></span><br>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
-    </div>
-  </div>
-  <hr>
-  <div class="w3-container">
-    <h5>Dashboard</h5>
-  </div>
-  <div class="w3-bar-block">
-     <a href="#" th:href="@{/student/mygrades}" class="w3-bar-item w3-button w3-padding "><i class="fa fa-users fa-fw"></i>  Grade Received</a>
-    <a href="#" th:href="@{/student/enrollcourse}"class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>Available Courses</a>
-    
-        <a href="#" th:href="@{/student/enrolled}"class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>Enrolled Courses</a>
-    
-        <a href="#" th:href="@{/student/movement/2}"class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-eye fa-fw"></i> Movement Register</a>
-    
-    <a href="#" th:href="@{/home/logout}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  Log Out</a>
-  </div>
-</nav>
-
-
-<!-- Overlay effect when opening sidebar on small screens -->
-<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
 
 
@@ -60,20 +28,11 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
   <!-- Header -->
   <header class="w3-container" style="padding-top:22px">
-    <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
+    <h5><b><i class="fa fa-dashboard"></i> Movement Reg</b></h5>
   </header>
 
   <div class="w3-row-padding w3-margin-bottom">
-    <div class="w3-col" style="width:20%">
-      <div class="w3-container w3-red w3-padding-16">
-        <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
-        <div class="w3-right">
-          <h3 th:text=${mydepart}>??</h3>
-        </div>
-        <div class="w3-clear"></div>
-        <h4>Department</h4>
-      </div>
-    </div>
+
     <div class="w3-col" style="width:20%">
       <div class="w3-container w3-blue w3-padding-16">
         <div class="w3-left"><i class="fa fa-eye w3-xxxlarge"></i></div>
@@ -81,34 +40,14 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
           <h3 th:text=${mycourse}>??</h3>
         </div>
         <div class="w3-clear"></div>
-        <h4>Courses In Charge</h4>
+        <h4>All Leaves Approved</h4>
       </div>
     </div>
-    <div class="w3-col" style="width:20%">
-      <div class="w3-container w3-teal w3-padding-16">
-        <div class="w3-left"><i class="fa fa-share-alt w3-xxxlarge"></i></div>
-        <div class="w3-right">
-          <h3 th:text=${myleaves}></h3>
-        </div>
-        <div class="w3-clear"></div>
-        <h4>Leave Application</h4>
-      </div>
-    </div>
+  
     
-     <div class="w3-col" style="width:20%">
-     
-        <div class="w3-left"><i class="fa fa-share-alt w3-xxxlarge"></i></div>
-        <div class="w3-right">
-          <h3 th:text=${myleaves}></h3>
-        </div>
-        <div class="w3-clear"></div>
       
     <div class="form-group blu-margin">
-    <select class="form-control" id="months" onchange="window.location.href=this.value;">
-    <option value="/student/movement/1">Last Month</option>
-    <option value="/student/movement/2" selected>Current Month</option>
-    <option value="/student/movement/3">Next Month</option>
-    </select>
+
   
 </div>
   
@@ -117,7 +56,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     </div>
     
     
-   </div>
+  
 
   <div class="w3-panel">
     <div class="w3-row-padding" style="margin:0 -16px">
@@ -146,6 +85,12 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
  			</tr>
 	
         </table>
+            <select class="form-control" id="months" onchange="window.location.href=this.value;">
+    <option value="/admin/movement/2">--</option>
+    <option value="/admin/movement/1">Last Month</option>
+    <option value="/admin/movement/2">Current Month</option>
+    <option value="/admin/movement/3">Next Month</option>
+    </select>
         <hr>
 
 			
@@ -157,10 +102,10 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     </div>
   </div>
   <hr>
-  
+   </div>
   <!-- Footer -->
   <footer class="w3-container w3-padding-16 w3-light-grey">
-    <p class="w3-wide" align="center">&copy; Shawn Wang Presented, All Rights Reserved</p>
+    <p class="w3-wide" align="center">&copy; NUS ISS SA49 Team1 Presented, All Rights Reserved</p>
   </footer>
 
   <!-- End page content -->
