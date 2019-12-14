@@ -96,60 +96,26 @@ public class StuController {
 		
 		if(!usersession.getUserType().equals("STU")||usersession==null) return "forward:/home/logout";
 		
-		//Pageable page1 = (Pageable) PageRequest.of(0, 3);
-		
 		Students stu=stuservice.findById(usersession.getId());
 		
 		List<StudentCourse> stucoulist=stucouservice.findAllByStudent(stu);
 		
-		List<StudentCourse> compstucoulist=new ArrayList<StudentCourse>();
+		List<StudentCourse> compstucoulist=stucoulist.stream().filter(x->x.getStatus().equals("Graded")).collect(Collectors.toList());
 		double mygpa=0.0;
 		double units=0.0;
-		
-		//org.jboss.logging.Logger logger = LoggerFactory.logger(StuController.class);
-		/*for(StudentCourse sc:stucoulist)
-		{
-			//logger.info("StudentCoursegggggggggggggggggggggggggggggggggggggg"+sc);
-			if (sc.getStatus().equals("Graded")) 
-				{
-				compstucoulist.add(sc);
-				if(sc.getGrade().equals("A")) {
-					mygpa+=5*sc.getCourse().getCourseUnit();
-					units+=sc.getCourse().getCourseUnit();
-				}
-				else if (sc.getGrade().equals("B")) {
-					mygpa+=4*sc.getCourse().getCourseUnit();
-					units+=sc.getCourse().getCourseUnit();
-				}
-				else if (sc.getGrade().equals("C")) {
-					mygpa+=3*sc.getCourse().getCourseUnit();
-					units+=sc.getCourse().getCourseUnit();
-					}
-				else if (sc.getGrade().equals("D")) {
-					mygpa+=2*sc.getCourse().getCourseUnit();
-					units+=sc.getCourse().getCourseUnit();
-				}
-				else if(sc.getGrade().equals("E")) {
-					mygpa+=1*sc.getCourse().getCourseUnit();
-					units+=sc.getCourse().getCourseUnit();
-				}
-			
-		}*/
 		
 		mygpa=stu.getCgpa();
 		units=stucouservice.findAllByStudent(stu).stream().collect(Collectors.summingInt(x->x.getCourse().getCourseUnit()));
 		
-			double a1=mygpa/units;
-			double aa=Math.round(a1 * 100.0) / 100.0;
+		double a1=mygpa/units;
+		double aa=Math.round(a1 * 100.0) / 100.0;
 	
-		
 		
 		model.addAttribute("studentname",stu.toString());
 		model.addAttribute("compstucoulist", compstucoulist);
 		model.addAttribute("mygpa",aa);
 		
 		model.addAttribute("mysemester", stu.getSemester());
-		//model.addAttribute("mycourseenrolled", stucourepo.findAllByStudent(stu,(Pageable) PageRequest.of(0,3)).size());
 		return "mygrades";
 	}
 	
@@ -184,7 +150,7 @@ public class StuController {
 
 	       if (student_course_list.size() < startItem) 
 	       {
-	    	   System.out.print("List ITEM EMPTY");
+	    	 
 	           list = Collections.emptyList();
 	       }
 	       else {

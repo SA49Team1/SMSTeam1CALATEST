@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.catalina.filters.RequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -274,9 +275,19 @@ public class AdmController {
 		return "facultyform";
 	}
 	
+	
 	@GetMapping("/deletefaculty/{id}")
 	public String deleteFaculty(Model model, @PathVariable("id") Integer id) {
 		Faculty fac=facservice.findById(id);
+		
+		/////////////////delete related leave application
+		List<LeaveApp> leaves=leaservice.findAllByFaculty(fac);
+		leaves.stream().forEach(x->leaservice.deleteLeave(x));
+		
+		//////////set attribute of courses in charge to null before delete faculty 
+		List<Course> courses=couservice.findAllByCurrentFaculty(fac);
+		courses.stream().forEach(x->x.setCurrentFaculty(null));
+		
 		facservice.delete(fac);
 		return "forward:/admin/facultylist";
 	}
@@ -390,6 +401,8 @@ public class AdmController {
 	public String deleteCourse(Model model, @PathVariable("id") Integer id) {
 		
 		Course cou=couservice.findById(id);
+		
+		
 		
 		//remove correlated stu_course record before remove course record.
 		List<StudentCourse> stucoulist=stucouservice.findAllByCourse(cou);

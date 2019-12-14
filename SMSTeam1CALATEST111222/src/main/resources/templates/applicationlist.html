@@ -140,8 +140,8 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
  			<td th:text="${#calendars.format(leaveapp.endDate,'dd-MM-yyyy')}">End Date</td>
  			
  			
- 			<td><a href="#" th:href="@{/admin/approveleaveapp/}+${leaveapp.id}" >Approve</a></td>
- 			<td><a href="#" th:href="@{/admin/rejectleaveapp/}+${leaveapp.id}" >Reject</a></td>
+ 			<td><a href="#" th:href="@{/admin/approveleaveapp/}+${leaveapp.getId()}" >Approve</a></td>
+ 			<td><a href="#" th:href="@{/admin/rejectleaveapp/}+${leaveapp.getId()}" >Reject</a></td>
  			</tr>
  			<tr>
  			
