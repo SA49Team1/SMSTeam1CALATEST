@@ -130,7 +130,7 @@ input[type=text] {
 	<div class="w3-container">
 	<form action="/admin/savefaculty" method="get" th:object="${faculty}" th:action="@{/admin/savefaculty}">
 	<fieldset>
-		Faculty ID: <input type="text" th:field="*{facultyID}">
+		Faculty ID: <input type="text" th:field="*{facultyID}" readonly>
 		<p th:if="${#fields.hasErrors('facultyID')}" th:errors="*{facultyID}"></p>
 	</fieldset>
 

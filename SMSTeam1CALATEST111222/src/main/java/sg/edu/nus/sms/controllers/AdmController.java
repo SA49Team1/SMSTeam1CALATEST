@@ -139,7 +139,7 @@ public class AdmController {
 	@GetMapping("/addstudent")
 	public String addStudentForm(Model model) {
 		Students stu=new Students();
-		stu.setStudentID(stuservice.count()+1);
+		stu.setStudentID(stuservice.findAll().stream().mapToInt(x->x.getStudentID()).max().getAsInt()+1);
 		model.addAttribute("student",stu);
 		
 		int leacount=leaservice.findAllByStatus("Pending").size();
@@ -251,6 +251,7 @@ public class AdmController {
 	@GetMapping("/addfaculty")
 	public String addFacultyForm(Model model) {
 		Faculty fac=new Faculty();
+		fac.setFacultyID(facservice.findAll().stream().mapToInt(x->x.getFacultyID()).max().getAsInt()+1);
 		model.addAttribute("faculty",fac);
 		model.addAttribute("departmentlist",dlist);
 		
