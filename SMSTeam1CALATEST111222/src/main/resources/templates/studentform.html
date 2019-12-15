@@ -50,7 +50,7 @@ input[type=text] {
     <a href="#" th:href="@{/admin/applicationlist}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  Leave Application</a>
     <a href="#" th:href="@{/admin/courseapplist}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  Course Application</a>
     <a href="#" th:href="@{/admin/enrollreport}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-table fa-fw"></i>  Enrollment Report</a>
-    <a href="#" target="blank_" th:href="@{/admin/movement/2}"class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i> Movement Register</a>
+    <a href="#" target="blank_" th:href="@{/admin/movement/2}"class="w3-bar-item w3-button w3-padding"><i class="fa fa-share-alt fa-fw"></i> Movement Register</a>
     
     <a href="#" th:href="@{/home/logout}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  Log Out</a>
     </div>
@@ -74,7 +74,7 @@ input[type=text] {
   <div class="w3-row-padding w3-margin-bottom">
     <div class="w3-col" style="width:20%">
       <div class="w3-container w3-red w3-padding-16">
-        <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
+        <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
         <div class="w3-right">
           <h3 th:text=${stucount}>??</h3>
         </div>
@@ -94,7 +94,7 @@ input[type=text] {
     </div>
     <div class="w3-col" style="width:20%">
       <div class="w3-container w3-teal w3-padding-16">
-        <div class="w3-left"><i class="fa fa-share-alt w3-xxxlarge"></i></div>
+        <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
         <div class="w3-right">
           <h3 th:text=${coucount}></h3>
         </div>
@@ -104,7 +104,7 @@ input[type=text] {
     </div>
     <div class="w3-col" style="width:20%">
       <div class="w3-container w3-orange w3-text-white w3-padding-16">
-        <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
+        <div class="w3-left"><i class="fa fa-bullseye w3-xxxlarge"></i></div>
         <div class="w3-right">
           <h3 th:text=${leacount}>??</h3>
         </div>
@@ -116,7 +116,7 @@ input[type=text] {
   
   <div class="w3-col" style="width:20%">
       <div class="w3-container w3-purple w3-text-white w3-padding-16">
-        <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
+        <div class="w3-left"><i class="fa fa-diamond w3-xxxlarge"></i></div>
         <div class="w3-right">
           <h3 th:text=${couappcount}>??</h3>
         </div>
