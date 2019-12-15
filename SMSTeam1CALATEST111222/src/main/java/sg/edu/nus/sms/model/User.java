@@ -44,7 +44,20 @@ public class User {
 	public void setPassWord(String passWord) {
 		this.passWord = passWord;
 	}
-
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	public String getRoles() {
+		return roles;
+	}
+	public void setRoles(String roles) {
+		this.roles = roles;
+	}
+	private boolean active;
+    private String roles;
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -53,6 +66,8 @@ public class User {
 		super();
 		this.userName = userName;
 		this.passWord = passWord;
+		this.active = true;
+		
 		
 	}
 	@Override
