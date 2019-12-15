@@ -132,7 +132,7 @@ input[type=text] {
        
 			<form action="/admin/savecourse" method="get" th:object="${course}" th:action="@{/admin/savecourse}" >
 	<fieldset>
-		Course Code: <input type="text" th:field="*{courseCode}" readonly>
+		Course Code: <input type="text" th:field="*{courseCode}">
 		<p th:if="${#fields.hasErrors('courseCode')}" th:errors="*{courseCode}"></p>
 	</fieldset>
 

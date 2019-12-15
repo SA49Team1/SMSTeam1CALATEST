@@ -127,8 +127,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
         <table class="w3-table w3-striped w3-white">
         
          		<tr>
- 			<td><i class="fa fa-user w3-text-blue w3-large"></i>UserName</td><td>Faculty ID</td><td>First Name</td><td>Last Name</td><td>Department</td>
- 		</tr>
+ 			<td th:utext=#{faculty.userName}><i class="fa fa-user w3-text-blue w3-large"></i>UserName</td><td th:utext=#{faculty.facultyID}>Faculty ID</td><td th:utext=#{faculty.firstName}>First Name</td><td th:utext=#{faculty.lastName}>Last Name</td><td th:utext=#{faculty.department}>Department</td></tr>
 			<tr th:each="faculty:${faculties}">
  			<td th:text=${faculty.userName}>User Name</td>
  			<td th:text=${faculty.facultyID}>Faculty ID</td>

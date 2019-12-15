@@ -358,6 +358,7 @@ public class AdmController {
 		Course cou=new Course();
 		Faculty abs=new Faculty();
 		cou.setCurrentFaculty(abs);
+		cou.setId(couservice.count()+1);
 		
 		model.addAttribute("departmentlist",dlist);
 		model.addAttribute("course",cou);
@@ -659,7 +660,7 @@ public class AdmController {
 	{
 		
 		List<LeaveApp> lealist=new ArrayList<LeaveApp>();
-		lealist=leaservice.findAll();
+		lealist=leaservice.findAll().stream().filter(x->x.getStatus().equals("Approved")).collect(Collectors.toList());
 		
 		List<LeaveApp> this_month=new ArrayList<LeaveApp>();
 		List<LeaveApp> last_month=new ArrayList<LeaveApp>();

@@ -109,12 +109,13 @@ public class StuController {
 		double a1=mygpa/units;
 		double aa=Math.round(a1 * 100.0) / 100.0;
 	
-		
 		model.addAttribute("studentname",stu.toString());
 		model.addAttribute("compstucoulist", compstucoulist);
 		model.addAttribute("mygpa",aa);
 		
+		int mycoursesnum=(int) stucoulist.stream().filter(x->x.getStatus().equals("Approved")).count();
 		model.addAttribute("mysemester", stu.getSemester());
+		model.addAttribute("mycourseenrolled",mycoursesnum);
 		return "mygrades";
 	}
 	
@@ -132,7 +133,7 @@ public class StuController {
 			
 			if(c.getStatus().equals("Available")) {
 				student_course_list.add(c);
-				//System.out.println("SSSSSSSSSSS"+c.getStatus());
+				
 			}
 			
 		}
@@ -169,6 +170,13 @@ public class StuController {
         }
         model.addAttribute("bookPage",Student_Course_Page);
 		
+        List<StudentCourse> stucoulist=stucouservice.findAllByStudent(stu);
+        int mycoursesnum=(int) stucoulist.stream().filter(x->x.getStatus().equals("Approved")).count();
+		model.addAttribute("mysemester", stu.getSemester());
+		model.addAttribute("mycourseenrolled",mycoursesnum);
+		
+        
+        
         return "availablecourse.html";
 	}
 	
@@ -196,6 +204,11 @@ public class StuController {
 				
 
 		 model.addAttribute("enrolledcourse", total);
+		 
+		 int mycoursesnum=(int) stucoulist.stream().filter(x->x.getStatus().equals("Approved")).count();
+		model.addAttribute("mysemester", stu.getSemester());
+		model.addAttribute("mycourseenrolled",mycoursesnum);
+			
 		return "enrolledcourses.html";
 	}
 	

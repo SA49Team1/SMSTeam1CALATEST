@@ -126,13 +126,15 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 	
 	<fieldset>
 		<button type="submit" class="button">Save</button>
-		<button type="button" class="w3-btn" onclick="window.location.href='/faculty/coursestulist/'+${currentcourseid}">Cancel</button>
+		
+		<a href="#" th:href="@{/faculty/coursestulist/}+${currentcourseid}" type=button class="w3-btn">Cancel</a>
+	
 	</fieldset>
 	
 	</form>
 	
 		<hr>
-	<a href="#" th:href="@{/faculty/coursestulist/}+${currentcourseid}" type=button class="w3-btn">Cancel</a><br/>
+	<br/>
 	
 </div>
       
